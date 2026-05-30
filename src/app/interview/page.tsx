@@ -26,84 +26,90 @@ export default function InterviewPage() {
 
   if (step === 'intro') {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center p-4">
-        <div className="max-w-lg w-full">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl">💬</span>
+      <div className="min-h-screen bg-white flex items-center justify-center p-6">
+        <div className="max-w-md w-full">
+          {/* Logo mark */}
+          <div className="mb-10">
+            <div className="w-10 h-10 flex items-center justify-center bg-[#0f62fe] mb-6">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+              </svg>
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 mb-2">离职面谈</h1>
-            <p className="text-slate-600">一次安全、匿名的对话</p>
+            <h1 className="text-3xl font-light text-[#161616] mb-1">离职面谈</h1>
+            <p className="text-[#525252]">一次安全、匿名的对话</p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-sm">🔒</span>
-                </div>
-                <div>
-                  <p className="font-medium text-slate-900">完全匿名</p>
-                  <p className="text-sm text-slate-500">对话内容不会关联到您的个人身份</p>
-                </div>
+          {/* Feature list */}
+          <div className="border border-[#e0e0e0] divide-y divide-[#e0e0e0] mb-6">
+            <div className="flex items-start gap-4 p-5">
+              <div className="flex-shrink-0 mt-0.5">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f62fe" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
               </div>
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-sm">🤖</span>
-                </div>
-                <div>
-                  <p className="font-medium text-slate-900">AI 倾听者</p>
-                  <p className="text-sm text-slate-500">我不是HR，不代表公司，只想听听你的真实感受</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-sm">🎯</span>
-                </div>
-                <div>
-                  <p className="font-medium text-slate-900">推动改变</p>
-                  <p className="text-sm text-slate-500">你的反馈会被匿名汇总，帮助改善组织问题</p>
-                </div>
+              <div>
+                <p className="font-medium text-[#161616] text-sm">完全匿名</p>
+                <p className="text-sm text-[#525252] mt-0.5">对话内容不会关联到您的个人身份</p>
               </div>
             </div>
-
-            <div className="pt-4 border-t border-slate-100">
-              <p className="text-xs text-slate-400 mb-4">
-                对话大约需要 10-15 分钟，您可以随时结束
-              </p>
-              <button
-                onClick={() => setStep('form')}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-xl transition-colors"
-              >
-                开始对话
-              </button>
+            <div className="flex items-start gap-4 p-5">
+              <div className="flex-shrink-0 mt-0.5">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f62fe" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                  <path d="M18 14l2 2 4-4" strokeWidth="1.5"/>
+                </svg>
+              </div>
+              <div>
+                <p className="font-medium text-[#161616] text-sm">AI 倾听者</p>
+                <p className="text-sm text-[#525252] mt-0.5">不是 HR，不代表公司，只想听听你的真实感受</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4 p-5">
+              <div className="flex-shrink-0 mt-0.5">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f62fe" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+                </svg>
+              </div>
+              <div>
+                <p className="font-medium text-[#161616] text-sm">推动改变</p>
+                <p className="text-sm text-[#525252] mt-0.5">反馈会被匿名汇总，帮助改善组织问题</p>
+              </div>
             </div>
           </div>
+
+          <p className="text-xs text-[#6f6f6f] mb-5">对话大约需要 10–15 分钟，您可以随时结束</p>
+
+          <button
+            onClick={() => setStep('form')}
+            className="w-full bg-[#0f62fe] hover:bg-[#0353e9] text-white font-medium py-3 px-4 transition-colors text-sm"
+          >
+            开始对话
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center p-4">
-      <div className="max-w-lg w-full">
-        <div className="text-center mb-6">
-          <h2 className="text-xl font-bold text-slate-900">基本信息</h2>
-          <p className="text-sm text-slate-500 mt-1">仅用于对话引导，不会关联个人身份</p>
+    <div className="min-h-screen bg-white flex items-center justify-center p-6">
+      <div className="max-w-md w-full">
+        <div className="mb-8">
+          <h2 className="text-3xl font-light text-[#161616]">基本信息</h2>
+          <p className="text-sm text-[#525252] mt-1">仅用于对话引导，不会关联个人身份</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-5">
+        <div className="border border-[#e0e0e0] p-6 space-y-6">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">所在部门</label>
+            <label className="block text-xs font-medium text-[#525252] uppercase tracking-wide mb-2">所在部门</label>
             <div className="grid grid-cols-2 gap-2">
               {DEPARTMENTS.map(d => (
                 <button
                   key={d}
                   onClick={() => setDepartment(d)}
-                  className={`py-2 px-3 rounded-lg text-sm border transition-colors ${
+                  className={`py-2 px-3 text-sm border transition-colors ${
                     department === d
-                      ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                      : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                      ? 'border-[#0f62fe] bg-[#edf5ff] text-[#0f62fe]'
+                      : 'border-[#e0e0e0] hover:border-[#8d8d8d] text-[#525252]'
                   }`}
                 >
                   {d}
@@ -113,16 +119,16 @@ export default function InterviewPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">在职时长</label>
+            <label className="block text-xs font-medium text-[#525252] uppercase tracking-wide mb-2">在职时长</label>
             <div className="grid grid-cols-2 gap-2">
               {TENURE_OPTIONS.map(t => (
                 <button
                   key={t}
                   onClick={() => setTenure(t)}
-                  className={`py-2 px-3 rounded-lg text-sm border transition-colors ${
+                  className={`py-2 px-3 text-sm border transition-colors ${
                     tenure === t
-                      ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                      : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                      ? 'border-[#0f62fe] bg-[#edf5ff] text-[#0f62fe]'
+                      : 'border-[#e0e0e0] hover:border-[#8d8d8d] text-[#525252]'
                   }`}
                 >
                   {t}
@@ -132,16 +138,16 @@ export default function InterviewPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">职级层次</label>
+            <label className="block text-xs font-medium text-[#525252] uppercase tracking-wide mb-2">职级层次</label>
             <div className="grid grid-cols-2 gap-2">
               {ROLE_LEVELS.map(r => (
                 <button
                   key={r}
                   onClick={() => setRoleLevel(r)}
-                  className={`py-2 px-3 rounded-lg text-sm border transition-colors ${
+                  className={`py-2 px-3 text-sm border transition-colors ${
                     roleLevel === r
-                      ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                      : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                      ? 'border-[#0f62fe] bg-[#edf5ff] text-[#0f62fe]'
+                      : 'border-[#e0e0e0] hover:border-[#8d8d8d] text-[#525252]'
                   }`}
                 >
                   {r}
@@ -153,14 +159,14 @@ export default function InterviewPage() {
           <div className="flex gap-3 pt-2">
             <button
               onClick={() => setStep('intro')}
-              className="flex-1 border border-slate-200 hover:bg-slate-50 text-slate-600 font-medium py-3 px-4 rounded-xl transition-colors"
+              className="flex-1 border border-[#e0e0e0] hover:bg-[#f4f4f4] text-[#525252] font-medium py-3 px-4 transition-colors text-sm"
             >
               返回
             </button>
             <button
               onClick={handleStart}
               disabled={!department || !tenure || !roleLevel || isStarting}
-              className="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white font-medium py-3 px-4 rounded-xl transition-colors"
+              className="flex-1 bg-[#0f62fe] hover:bg-[#0353e9] disabled:bg-[#c6c6c6] text-white font-medium py-3 px-4 transition-colors text-sm"
             >
               {isStarting ? '准备中...' : '进入面谈'}
             </button>
