@@ -11,7 +11,7 @@ import {
 } from '@/lib/storage';
 import { InterviewPhase } from '@/lib/types';
 
-// toTextStreamResponse() silently swallows errors — stream manually to surface them
+// toTextStreamResponse() silently swallows errors — stream manually via fullStream to surface them
 function streamWithErrors(
   result: ReturnType<typeof streamText>,
   headers: Record<string, string>
@@ -20,12 +20,18 @@ function streamWithErrors(
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        for await (const chunk of result.textStream) {
-          controller.enqueue(encoder.encode(chunk));
+        for await (const part of result.fullStream) {
+          if (part.type === 'text-delta') {
+            controller.enqueue(encoder.encode(part.textDelta));
+          } else if (part.type === 'error') {
+            const msg = part.error instanceof Error ? part.error.message : String(part.error);
+            console.error('streamText error part:', msg);
+            controller.enqueue(encoder.encode(`[AI错误: ${msg}]`));
+          }
         }
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
-        console.error('streamText error:', msg);
+        console.error('streamText exception:', msg);
         controller.enqueue(encoder.encode(`[AI错误: ${msg}]`));
       } finally {
         controller.close();
