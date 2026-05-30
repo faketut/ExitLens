@@ -1,5 +1,5 @@
 import { streamText } from 'ai';
-import { getLanguageModel } from '@/lib/ai/providers';
+import { getLanguageModels } from '@/lib/ai/providers';
 import { getSystemPrompt } from '@/lib/ai/prompts';
 import { getNextPhase, shouldAdvancePhase } from '@/lib/ai/state-machine';
 import {
@@ -10,6 +10,23 @@ import {
   createSession,
 } from '@/lib/storage';
 import { InterviewPhase } from '@/lib/types';
+
+// Try each model in turn; on synchronous throw, fall back to the next one.
+async function streamTextWithFallback(
+  args: Omit<Parameters<typeof streamText>[0], 'model'>
+): Promise<ReturnType<typeof streamText>> {
+  const models = getLanguageModels();
+  let lastErr: unknown;
+  for (const model of models) {
+    try {
+      return streamText({ ...args, model } as Parameters<typeof streamText>[0]);
+    } catch (err) {
+      console.error(`Provider failed, trying next:`, err instanceof Error ? err.message : err);
+      lastErr = err;
+    }
+  }
+  throw lastErr;
+}
 
 // toTextStreamResponse() silently swallows errors — stream manually via fullStream to surface them
 function streamWithErrors(
@@ -60,8 +77,7 @@ export async function POST(req: Request) {
       roleLevel: session.roleLevel,
     });
 
-    const result = streamText({
-      model: getLanguageModel(),
+    const result = await streamTextWithFallback({
       system: systemPrompt,
       messages: [
         { role: 'user', content: '（员工已进入对话）' }
@@ -124,8 +140,7 @@ export async function POST(req: Request) {
     content: m.content,
   }));
 
-  const result = streamText({
-    model: getLanguageModel(),
+  const result = await streamTextWithFallback({
     system: systemPrompt,
     messages,
   });
