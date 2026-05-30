@@ -87,26 +87,28 @@ function ChatContent() {
   const phaseIndex = PHASES_ORDER.indexOf(currentPhase);
 
   return (
-    <div className="flex flex-col h-screen bg-slate-50">
-      <header className="bg-white border-b border-slate-200 px-4 py-3 flex-shrink-0">
+    <div className="flex flex-col h-screen bg-[#f4f4f4]">
+      <header className="bg-white border-b border-[#e0e0e0] px-4 py-3 flex-shrink-0">
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
-                <span className="text-sm">💬</span>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 bg-[#0f62fe] flex items-center justify-center flex-shrink-0">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
               </div>
               <div>
-                <h1 className="text-sm font-semibold text-slate-900">小知 · AI面谈顾问</h1>
-                <p className="text-xs text-slate-500">{PHASE_CONFIG[currentPhase].name}</p>
+                <h1 className="text-sm font-semibold text-[#161616]">小知 · AI面谈顾问</h1>
+                <p className="text-xs text-[#525252]">{PHASE_CONFIG[currentPhase].name}</p>
               </div>
             </div>
-            <span className="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-full">匿名对话中</span>
+            <span className="text-xs text-[#6f6f6f] bg-[#f4f4f4] px-2 py-1">匿名对话中</span>
           </div>
-          <div className="flex gap-1">
+          <div className="flex gap-0.5">
             {PHASES_ORDER.map((phase, idx) => (
               <div
                 key={phase}
-                className={`h-1 flex-1 rounded-full transition-colors duration-500 ${idx <= phaseIndex ? 'bg-indigo-500' : 'bg-slate-200'}`}
+                className={`h-0.5 flex-1 transition-colors duration-500 ${idx <= phaseIndex ? 'bg-[#0f62fe]' : 'bg-[#e0e0e0]'}`}
                 title={PHASE_CONFIG[phase].name}
               />
             ))}
@@ -115,13 +117,13 @@ function ChatContent() {
       </header>
 
       <main className="flex-1 overflow-y-auto px-4 py-6">
-        <div className="max-w-2xl mx-auto space-y-4">
+        <div className="max-w-2xl mx-auto space-y-3">
           {messages.map((message) => (
             <div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+              <div className={`max-w-[78%] px-4 py-3 ${
                 message.role === 'user'
-                  ? 'bg-indigo-600 text-white rounded-br-md'
-                  : 'bg-white border border-slate-200 text-slate-800 rounded-bl-md shadow-sm'
+                  ? 'bg-[#0f62fe] text-white'
+                  : 'bg-white border border-[#e0e0e0] text-[#161616]'
               }`}>
                 <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
               </div>
@@ -129,11 +131,11 @@ function ChatContent() {
           ))}
           {isTyping && messages[messages.length - 1]?.content === '' && (
             <div className="flex justify-start">
-              <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
-                <div className="flex gap-1.5">
-                  <div className="w-2 h-2 bg-slate-300 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-2 h-2 bg-slate-300 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-2 h-2 bg-slate-300 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              <div className="bg-white border border-[#e0e0e0] px-4 py-3">
+                <div className="flex gap-1.5 items-center h-4">
+                  <div className="w-1.5 h-1.5 bg-[#8d8d8d] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <div className="w-1.5 h-1.5 bg-[#8d8d8d] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <div className="w-1.5 h-1.5 bg-[#8d8d8d] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
               </div>
             </div>
@@ -142,13 +144,14 @@ function ChatContent() {
         </div>
       </main>
 
-      <footer className="bg-white border-t border-slate-200 px-4 py-3 flex-shrink-0">
+      <footer className="bg-white border-t border-[#e0e0e0] px-4 py-3 flex-shrink-0">
         <div className="max-w-2xl mx-auto">
           {isDone ? (
-            <div className="text-center py-2">
-              <p className="text-sm text-slate-500 mb-2">对话已结束，感谢您的分享</p>
-              <a href="/dashboard" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
-                查看洞察报告 →
+            <div className="flex items-center justify-between py-2">
+              <p className="text-sm text-[#525252]">对话已结束，感谢您的分享</p>
+              <a href="/dashboard" className="inline-flex items-center gap-1 text-sm text-[#0f62fe] hover:underline font-medium">
+                查看洞察报告
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </a>
             </div>
           ) : (
@@ -158,13 +161,13 @@ function ChatContent() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={isTyping ? '小知正在输入...' : '输入你的想法，按回车发送'}
-                className="flex-1 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="flex-1 border border-[#e0e0e0] px-4 py-2.5 text-sm text-[#161616] placeholder-[#a8a8a8] focus:outline-none focus:border-[#0f62fe] transition-colors"
                 disabled={isTyping}
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isTyping}
-                className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white px-5 py-3 rounded-xl text-sm font-medium transition-colors"
+                className="bg-[#0f62fe] hover:bg-[#0353e9] disabled:bg-[#c6c6c6] text-white px-5 py-2.5 text-sm font-medium transition-colors"
               >
                 发送
               </button>
@@ -179,8 +182,8 @@ function ChatContent() {
 export default function ChatPage() {
   return (
     <Suspense fallback={
-      <div className="flex items-center justify-center h-screen bg-slate-50">
-        <div className="text-slate-500">加载中...</div>
+      <div className="flex items-center justify-center h-screen bg-white">
+        <div className="text-[#525252] text-sm">加载中...</div>
       </div>
     }>
       <ChatContent />
