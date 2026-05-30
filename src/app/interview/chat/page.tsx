@@ -25,6 +25,19 @@ const SCRIPT: { phase: InterviewPhase; text: string }[] = [
   { phase: 'closing',     text: '非常感谢你今天愿意花时间分享这些真实的想法。你的每一个反馈都会以完全匿名的方式汇入组织洞察，帮助公司做出有意义的改善。\n\n祝你在新的地方一切顺利，找到真正适合你的环境！🌟' },
 ];
 
+const USER_RESPONSES: string[] = [
+  '团队氛围还不错，做过几个有成就感的项目，技术上也学到了东西。',
+  '感觉成长空间越来越小了，做的事情比较重复，没什么新的挑战。',
+  '主要是技术层面，用的框架太老旧了，感觉自己的市场竞争力在下降。',
+  '直属领导换了好几次，每次都要重新建立工作方式，沟通成本很高。',
+  '不太清楚，可能是部门内部有些矛盾，管理层之间也有分歧。',
+  '和外面的 offer 比差了大概 20% 左右，这个差距有点难接受。',
+  '有一次我独立完成了一个比较复杂的需求，但上线的时候完全没有被提到。',
+  '是的，这几点基本都准确，特别是薪资和管理稳定性这两块。',
+  '我觉得最重要的是有一个清晰的技术路线图，让大家知道方向在哪里。',
+  '对，就是这种感觉——想知道自己做的东西到底有没有意义。',
+];
+
 function simulateTyping(text: string, onUpdate: (s: string) => void, onDone: () => void): () => void {
   let i = 0;
   const id = setInterval(() => {
@@ -74,6 +87,13 @@ function ChatContent() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { const cleanup = playNextAI(0); return cleanup; }, []);
+
+  // Auto-fill demo response when AI finishes typing
+  useEffect(() => {
+    if (!isTyping && scriptIdx > 0 && scriptIdx < SCRIPT.length && !isDone) {
+      setInput(USER_RESPONSES[scriptIdx - 1]);
+    }
+  }, [isTyping, scriptIdx, isDone]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
