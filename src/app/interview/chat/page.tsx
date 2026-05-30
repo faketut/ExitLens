@@ -43,6 +43,14 @@ function ChatContent() {
         body: JSON.stringify(body),
       });
 
+      if (!res.ok) {
+        const errText = await res.text().catch(() => `HTTP ${res.status}`);
+        setMessages(prev =>
+          prev.map(m => m.id === assistantMsgId ? { ...m, content: `错误 ${res.status}: ${errText.slice(0, 300)}` } : m)
+        );
+        return;
+      }
+
       // Extract headers
       const newSessionId = res.headers.get('X-Session-Id');
       const phase = res.headers.get('X-Phase');
@@ -62,6 +70,12 @@ function ChatContent() {
         fullText += chunk;
         setMessages(prev =>
           prev.map(m => m.id === assistantMsgId ? { ...m, content: fullText } : m)
+        );
+      }
+
+      if (!fullText) {
+        setMessages(prev =>
+          prev.map(m => m.id === assistantMsgId ? { ...m, content: '（AI 未返回内容，请检查 API Key 配置）' } : m)
         );
       }
     } catch (error) {

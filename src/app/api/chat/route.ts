@@ -12,6 +12,7 @@ import {
 import { InterviewPhase } from '@/lib/types';
 
 export async function POST(req: Request) {
+  try {
   const body = await req.json();
   const { sessionId, message, action } = body;
 
@@ -106,4 +107,12 @@ export async function POST(req: Request) {
       'X-Phase': newPhase,
     },
   });
+  } catch (error) {
+    console.error('Chat API error:', error);
+    const msg = error instanceof Error ? error.message : String(error);
+    return new Response(JSON.stringify({ error: msg }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 }
