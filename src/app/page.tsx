@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import React from 'react';
 
 export default function Home() {
   return (
@@ -167,16 +168,65 @@ export default function Home() {
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#e0e0e0]">
-            {[
-              { icon: '📊', title: '真实原因分布', body: '匿名聚合后的离职原因占比，而非员工告知 HR 的礼貌版本' },
-              { icon: '🔍', title: '跨团队模式检测', body: '自动识别"3人都提到管理沟通问题"等跨团队共性信号' },
-              { icon: '⚡', title: '可执行建议', body: '按严重程度排序的改善建议，直接对应 HRBP 可落地的行动' },
-              { icon: '📈', title: '月度趋势追踪', body: '发现特定部门或时间段的离职恶化信号，提前预警' },
-              { icon: '⏱', title: '节省 HRBP 时间', body: '自动完成重复性面谈，HRBP 只需关注高风险案例的深度跟进' },
-              { icon: '🔒', title: '员工信任保障', body: '全程匿名，员工知道结果只以聚合形式呈现，愿意说真话' },
-            ].map((item, i) => (
+            {([
+              {
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f62fe" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/><rect x="17" y="3" width="4" height="18"/>
+                  </svg>
+                ),
+                title: '真实原因分布',
+                body: '匿名聚合后的离职原因占比，而非员工告知 HR 的礼貌版本',
+              },
+              {
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f62fe" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="10" cy="10" r="6"/><path d="M21 21l-4.35-4.35"/>
+                    <path d="M8 10h4M10 8v4"/>
+                  </svg>
+                ),
+                title: '跨团队模式检测',
+                body: '自动识别"3人都提到管理沟通问题"等跨团队共性信号',
+              },
+              {
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f62fe" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"/>
+                  </svg>
+                ),
+                title: '可执行建议',
+                body: '按严重程度排序的改善建议，直接对应 HRBP 可落地的行动',
+              },
+              {
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f62fe" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+                  </svg>
+                ),
+                title: '月度趋势追踪',
+                body: '发现特定部门或时间段的离职恶化信号，提前预警',
+              },
+              {
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f62fe" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>
+                  </svg>
+                ),
+                title: '节省 HRBP 时间',
+                body: '自动完成重复性面谈，HRBP 只需关注高风险案例的深度跟进',
+              },
+              {
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f62fe" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                ),
+                title: '员工信任保障',
+                body: '全程匿名，员工知道结果只以聚合形式呈现，愿意说真话',
+              },
+            ] as { icon: React.ReactNode; title: string; body: string }[]).map((item, i) => (
               <div key={i} className="bg-white p-8">
-                <div className="text-2xl mb-4">{item.icon}</div>
+                <div className="mb-5">{item.icon}</div>
                 <h3 className="font-semibold text-[#161616] mb-2">{item.title}</h3>
                 <p className="text-sm text-[#525252] leading-relaxed">{item.body}</p>
               </div>
