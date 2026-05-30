@@ -1,0 +1,13 @@
+{
+  "version": "2.0",
+  "envId": "aaa-d7gt905d719f4d882",
+  "app": {
+    "serviceName": "exit-lens",
+    "framework": "next",
+    "installCommand": "npm install",
+    "buildCommand": "npm run build",
+    "outputDir": ".next",
+    "deployPath": "/",
+    "envVariables": {}
+  }
+}

@@ -1,6 +1,6 @@
 import { streamText } from 'ai';
 import { getLanguageModel } from '@/lib/ai/providers';
-import { getSystemPrompt, getPhaseTransitionPrompt } from '@/lib/ai/prompts';
+import { getSystemPrompt } from '@/lib/ai/prompts';
 import { getNextPhase, shouldAdvancePhase } from '@/lib/ai/state-machine';
 import {
   getSession,

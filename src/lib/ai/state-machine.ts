@@ -62,7 +62,3 @@ export function shouldAdvancePhase(
   return messageCount >= config.minMessages;
 }
 
-export function getPhaseProgress(currentPhase: InterviewPhase): number {
-  const idx = PHASES_ORDER.indexOf(currentPhase);
-  return ((idx + 1) / PHASES_ORDER.length) * 100;
-}

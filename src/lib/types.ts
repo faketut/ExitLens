@@ -38,10 +38,6 @@ export type InsightCategory =
   | 'wlb'             // 工作生活平衡
   | 'other';           // 其他
 
-export interface ChatMessage {
-  role: 'user' | 'assistant' | 'system';
-  content: string;
-}
 
 export interface SessionStartInput {
   department: string;

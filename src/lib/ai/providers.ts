@@ -49,7 +49,3 @@ export function getLanguageModel() {
   }
 }
 
-export function getActiveProvider(): string {
-  const config = getProviderConfig();
-  return `${config.provider}/${config.model}`;
-}

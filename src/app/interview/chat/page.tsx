@@ -33,7 +33,7 @@ function ChatContent() {
 
   const sendToAPI = useCallback(async (body: Record<string, unknown>) => {
     setIsLoading(true);
-    const assistantMsgId = `msg_${Date.now()}`;
+    const assistantMsgId = crypto.randomUUID();
     setMessages(prev => [...prev, { id: assistantMsgId, role: 'assistant', content: '' }]);
 
     try {
@@ -89,7 +89,7 @@ function ChatContent() {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
-    const userMsg: Message = { id: `msg_${Date.now()}`, role: 'user', content: input.trim() };
+    const userMsg: Message = { id: crypto.randomUUID(), role: 'user', content: input.trim() };
     setMessages(prev => [...prev, userMsg]);
     const message = input.trim();
     setInput('');

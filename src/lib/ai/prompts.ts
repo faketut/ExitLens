@@ -114,39 +114,3 @@ function getPhaseInstruction(phase: InterviewPhase): string {
   }
 }
 
-/**
- * Prompt for extracting structured insights from a completed conversation.
- */
-export const INSIGHT_EXTRACTION_PROMPT = `你是一位HR数据分析专家。请分析以下离职面谈对话，提取结构化洞察。
-
-对于每个洞察，请提供：
-1. category：分类（management/growth/compensation/culture/workload/recognition/team_dynamics/strategy/wlb/other）
-2. content：简短描述（一句话）
-3. severity：严重程度（low/medium/high）
-4. isActionable：是否可执行改善措施（true/false）
-5. relatedQuote：对话中的相关原文（如有）
-
-请以JSON数组格式返回，不要包含其他文字。
-示例格式：
-[
-  {
-    "category": "management",
-    "content": "直属上级缺乏有效的反馈沟通",
-    "severity": "high",
-    "isActionable": true,
-    "relatedQuote": "我的leader从来不会告诉我做得好不好"
-  }
-]`;
-
-/**
- * Prompt to determine if conversation should advance to next phase.
- */
-export function getPhaseTransitionPrompt(currentPhase: InterviewPhase): string {
-  return `基于当前对话内容，判断是否应该从"${currentPhase}"阶段进入下一阶段。
-考虑因素：
-- 当前阶段的目标是否已基本达成
-- 对方是否已充分表达
-- 是否有自然的转折点
-
-只回答 "ADVANCE" 或 "STAY"，不要解释。`;
-}
