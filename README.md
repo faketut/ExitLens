@@ -22,7 +22,7 @@
 ### 环境要求
 
 - Node.js 20+
-- 至少一个 LLM API Key（OpenAI / Anthropic / DeepSeek 三选一）
+- 至少一个 LLM API Key（OpenAI / Anthropic / DeepSeek / Gemini 任选）
 
 ### 快速启动
 
@@ -32,7 +32,7 @@ npm install
 
 # 2. 配置 API Key（编辑 .env.local）
 cp .env.example .env.local
-# 填入：OPENAI_API_KEY=sk-xxx  或  ANTHROPIC_API_KEY=  或  DEEPSEEK_API_KEY=
+# 填入至少一个：OPENAI_API_KEY=sk-xxx  或  DEEPSEEK_API_KEY=  或  GEMINI_API_KEY=
 
 # 3. 启动开发服务器
 npm run dev
@@ -42,11 +42,12 @@ npm run dev
 
 ### 多模型支持
 
-系统按以下优先级自动选择可用模型：
+系统按以下优先级自动选择可用模型，**所有配置了 Key 的模型都会注册，主模型失败时自动 fallback 到下一个**：
 
 1. OpenAI（`OPENAI_API_KEY`）→ `gpt-4o`
 2. Anthropic（`ANTHROPIC_API_KEY`）→ `claude-sonnet-4-20250514`
 3. DeepSeek（`DEEPSEEK_API_KEY`）→ `deepseek-chat`
+4. Google Gemini（`GEMINI_API_KEY`）→ `gemini-2.0-flash`
 
 ---
 
@@ -99,9 +100,11 @@ docker push ccr.ccs.tencentyun.com/<namespace>/exit-lens:latest
 1. 进入 [CloudBase 控制台](https://console.cloud.tencent.com/tcb) → 选择环境 → **云托管**
 2. 新建服务 → 选择「使用镜像」→ 填入镜像地址
 3. 端口填 `3000`
-4. 在「环境变量」中添加（至少一个）：
+4. 在「环境变量」中添加（至少一个，多个同时配置可自动 fallback）：
    - `OPENAI_API_KEY` = `sk-xxx`
-   - 或 `DEEPSEEK_API_KEY` / `ANTHROPIC_API_KEY`
+   - `DEEPSEEK_API_KEY` = `sk-xxx`
+   - `ANTHROPIC_API_KEY` = `sk-ant-xxx`
+   - `GEMINI_API_KEY` = `AIza...`
 5. 点击「发布」→ 云托管会分配公网域名（`xxx.ap-shanghai.run.tcloudbase.com`）
 
 ---
@@ -137,7 +140,11 @@ src/
 | `OPENAI_API_KEY` | OpenAI API Key | `sk-proj-...` |
 | `OPENAI_MODEL` | 模型名（可选，默认 gpt-4o）| `gpt-4o-mini` |
 | `ANTHROPIC_API_KEY` | Anthropic API Key | `sk-ant-...` |
+| `ANTHROPIC_MODEL` | 模型名（可选）| `claude-sonnet-4-20250514` |
 | `DEEPSEEK_API_KEY` | DeepSeek API Key | `sk-...` |
+| `DEEPSEEK_MODEL` | 模型名（可选，默认 deepseek-chat）| `deepseek-reasoner` |
+| `GEMINI_API_KEY` | Google Gemini API Key | `AIza...` |
+| `GEMINI_MODEL` | 模型名（可选，默认 gemini-2.0-flash）| `gemini-2.5-pro` |
 
 ---
 
