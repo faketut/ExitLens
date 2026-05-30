@@ -22,7 +22,7 @@ function streamWithErrors(
       try {
         for await (const part of result.fullStream) {
           if (part.type === 'text-delta') {
-            controller.enqueue(encoder.encode(part.textDelta));
+            controller.enqueue(encoder.encode(part.text));
           } else if (part.type === 'error') {
             const msg = part.error instanceof Error ? part.error.message : String(part.error);
             console.error('streamText error part:', msg);
