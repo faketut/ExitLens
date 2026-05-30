@@ -1,36 +1,144 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# exit-lens
 
-## Getting Started
+**ExitLens · AI 离职真因挖掘器**
 
-First, run the development server:
+利用 AI 消除离职面谈中的权力不对等和面子压力，通过动机访谈（MI）技术挖掘真实离职原因，为 HR 提供可执行的组织洞察。
+
+---
+
+## 产品页面
+
+| 页面 | 路径 | 说明 |
+|------|------|------|
+| Landing | `/` | 产品介绍与价值主张 |
+| 面谈引导 | `/interview` | 匿名信息采集 |
+| AI 对话 | `/interview/chat` | 六阶段流式对话 |
+| 洞察面板 | `/dashboard` | HR 管理后台，聚合分析 |
+
+---
+
+## 本地开发
+
+### 环境要求
+
+- Node.js 20+
+- 至少一个 LLM API Key（OpenAI / Anthropic / DeepSeek 三选一）
+
+### 快速启动
 
 ```bash
+# 1. 安装依赖
+npm install
+
+# 2. 配置 API Key（编辑 .env.local）
+cp .env.example .env.local
+# 填入：OPENAI_API_KEY=sk-xxx  或  ANTHROPIC_API_KEY=  或  DEEPSEEK_API_KEY=
+
+# 3. 启动开发服务器
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+访问 http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 多模型支持
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+系统按以下优先级自动选择可用模型：
 
-## Learn More
+1. OpenAI（`OPENAI_API_KEY`）→ `gpt-4o`
+2. Anthropic（`ANTHROPIC_API_KEY`）→ `claude-sonnet-4-20250514`
+3. DeepSeek（`DEEPSEEK_API_KEY`）→ `deepseek-chat`
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 部署
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 方案一：腾讯 CloudStudio（推荐用于演示）
 
-## Deploy on Vercel
+CloudStudio 是腾讯云的云端开发环境，无需本地配置即可运行项目并获得公网预览链接。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. 访问 [CloudStudio](https://cloudstudio.net) 并登录
+2. 新建工作空间 → 从 Git 仓库导入本项目
+3. 在终端安装依赖并配置环境变量：
+   ```bash
+   npm install
+   echo "OPENAI_API_KEY=sk-xxx" >> .env.local
+   # 或 DEEPSEEK_API_KEY= / ANTHROPIC_API_KEY=
+   ```
+4. 启动服务：
+   ```bash
+   npm run build && npm start
+   ```
+5. 点击右上角「端口预览」→ 选择端口 `3000` → 获取公网访问链接
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> CloudStudio 工作空间关闭后链接失效。如需持久部署，使用方案二。
+
+---
+
+### 方案二：腾讯云 CloudBase 云托管（持久部署）
+
+云托管是 CloudBase 提供的容器化托管服务，支持自动伸缩、自定义域名，项目根目录已含 `Dockerfile`。
+
+#### 步骤
+
+**① 构建 Docker 镜像**
+
+```bash
+docker build -t exit-lens:latest .
+```
+
+**② 推送到腾讯云容器镜像服务（TCR）**
+
+```bash
+docker login ccr.ccs.tencentyun.com
+docker tag exit-lens:latest ccr.ccs.tencentyun.com/<namespace>/exit-lens:latest
+docker push ccr.ccs.tencentyun.com/<namespace>/exit-lens:latest
+```
+
+**③ 在 CloudBase 控制台配置云托管**
+
+1. 进入 [CloudBase 控制台](https://console.cloud.tencent.com/tcb) → 选择环境 → **云托管**
+2. 新建服务 → 选择「使用镜像」→ 填入镜像地址
+3. 端口填 `3000`
+4. 在「环境变量」中添加（至少一个）：
+   - `OPENAI_API_KEY` = `sk-xxx`
+   - 或 `DEEPSEEK_API_KEY` / `ANTHROPIC_API_KEY`
+5. 点击「发布」→ 云托管会分配公网域名（`xxx.ap-shanghai.run.tcloudbase.com`）
+
+---
+
+## 项目结构
+
+```
+src/
+├── app/
+│   ├── api/
+│   │   ├── chat/route.ts        # 流式对话 API（多模型）
+│   │   └── insights/route.ts    # 分析数据 API
+│   ├── dashboard/page.tsx       # HR 洞察仪表盘
+│   ├── interview/
+│   │   ├── page.tsx             # 面谈引导页
+│   │   └── chat/page.tsx        # AI 对话界面
+│   └── page.tsx                 # Landing page
+└── lib/
+    ├── ai/
+    │   ├── prompts.ts           # 动机访谈 System Prompt（6阶段）
+    │   ├── providers.ts         # 多模型适配层
+    │   └── state-machine.ts     # 六阶段对话状态机
+    ├── storage.ts               # 数据存储 + Mock 数据
+    └── types.ts                 # TypeScript 类型定义
+```
+
+---
+
+## 环境变量
+
+| 变量 | 说明 | 示例 |
+|------|------|------|
+| `OPENAI_API_KEY` | OpenAI API Key | `sk-proj-...` |
+| `OPENAI_MODEL` | 模型名（可选，默认 gpt-4o）| `gpt-4o-mini` |
+| `ANTHROPIC_API_KEY` | Anthropic API Key | `sk-ant-...` |
+| `DEEPSEEK_API_KEY` | DeepSeek API Key | `sk-...` |
+
+---
+
+AI-HR 培训生自由赛道作品 · 2026
