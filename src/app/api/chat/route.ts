@@ -11,6 +11,32 @@ import {
 } from '@/lib/storage';
 import { InterviewPhase } from '@/lib/types';
 
+// toTextStreamResponse() silently swallows errors — stream manually to surface them
+function streamWithErrors(
+  result: ReturnType<typeof streamText>,
+  headers: Record<string, string>
+): Response {
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    async start(controller) {
+      try {
+        for await (const chunk of result.textStream) {
+          controller.enqueue(encoder.encode(chunk));
+        }
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.error('streamText error:', msg);
+        controller.enqueue(encoder.encode(`[AI错误: ${msg}]`));
+      } finally {
+        controller.close();
+      }
+    },
+  });
+  return new Response(stream, {
+    headers: { 'Content-Type': 'text/plain; charset=utf-8', ...headers },
+  });
+}
+
 export async function POST(req: Request) {
   try {
   const body = await req.json();
@@ -39,13 +65,10 @@ export async function POST(req: Request) {
     // Save the initial message to history
     appendToHistory(session.id, { role: 'user', content: '（员工已进入对话）' });
 
-    const response = result.toTextStreamResponse({
-      headers: {
-        'X-Session-Id': session.id,
-        'X-Phase': session.currentPhase,
-      },
+    return streamWithErrors(result, {
+      'X-Session-Id': session.id,
+      'X-Phase': session.currentPhase,
     });
-    return response;
   }
 
   // Continue conversation
@@ -101,11 +124,9 @@ export async function POST(req: Request) {
     messages,
   });
 
-  return result.toTextStreamResponse({
-    headers: {
-      'X-Session-Id': sessionId,
-      'X-Phase': newPhase,
-    },
+  return streamWithErrors(result, {
+    'X-Session-Id': sessionId,
+    'X-Phase': newPhase,
   });
   } catch (error) {
     console.error('Chat API error:', error);
