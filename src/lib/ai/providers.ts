@@ -43,7 +43,7 @@ export function getLanguageModel() {
       // DeepSeek uses OpenAI-compatible API
       const deepseek = createOpenAI({
         apiKey: process.env.DEEPSEEK_API_KEY,
-        baseURL: 'https://api.deepseek.com',
+        baseURL: 'https://api.deepseek.com/v1',
       });
       return deepseek(config.model);
   }
