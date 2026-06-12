@@ -1,7 +1,10 @@
 # ---- Stage 1: deps ----
 FROM node:20-alpine AS deps
-RUN apk add --no-cache libc6-compat
 WORKDIR /app
+# Build-time only: tolerate corporate TLS proxies (e.g. Zscaler) that intercept HTTPS.
+# Not present in the runtime image.
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+RUN npm config set strict-ssl false
 COPY package.json package-lock.json* ./
 RUN npm ci
 
@@ -11,11 +14,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build args for environment variables available at build time
-ARG OPENAI_API_KEY
-ARG ANTHROPIC_API_KEY
-ARG DEEPSEEK_API_KEY
-
+# Mock-only build: no API keys required at build time
 RUN npm run build
 
 # ---- Stage 3: runner ----
